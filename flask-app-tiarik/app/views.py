@@ -1,6 +1,7 @@
 # views.py
 
 from flask import render_template
+from train.train_model import train_model_results
 
 from app import app
 
