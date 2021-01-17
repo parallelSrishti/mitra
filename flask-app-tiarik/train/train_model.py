@@ -18,7 +18,6 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import f1_score
 from sklearn.metrics import confusion_matrix,classification_report
-import joblib
 def train_model_results():
     train = pd.read_csv("./train.txt", delimiter=';', header=None, names=['sentence','label'])
     test = pd.read_csv("./test.txt", delimiter=';', header=None, names=['sentence','label'])
@@ -44,18 +43,9 @@ def train_model_results():
     recall = recall_score(y_test, predicted,average='macro')
     f1 = f1_score(y_test,predicted,average='macro')
     matrix = confusion_matrix(y_test,predicted)
+    return mnb
 
-    print(str('Accuracy: '+'{:04.2f}'.format(acc_score*100))+'%')
-    print(str('Precision: '+'{:04.2f}'.format(prec_score*100))+'%')
-    print(str('Recall: '+'{:04.2f}'.format(recall*100))+'%')
-    print('F1 Score: ',f1)
-    print(matrix)
-    #dummy test
-    test_data = ['i feel sick','i am ecstatic my model works', 'i feel shitty', 'i feel lost', 'im petrified', 'i am worried']
+    def result(model, test_data):
+        test_result = model.predict(cv.transform(test_data))
+        return test_result
 
-    test_result = mnb.predict(cv.transform(test_data))
-
-    print(test_result)
-    joblib.dump(mnb, 'model.pkl')
-    model = open('model.pkl','rb')
-    mnb = joblib.load(model)
